@@ -14,5 +14,6 @@ export default (app: Application) => {
   router.post('/hp/article_detail', controller.blog.article.index);
   router.get('/hp/article_list', controller.blog.article.list);
   
+  router.post('/qw/qa', controller.qw.qa.callback);
   
 };
