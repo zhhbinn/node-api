@@ -3,7 +3,7 @@ import { Controller } from 'egg';
 
 export default class QaController extends Controller {
   public async callback() {
-    const { ctx, service } = this;
+    const { ctx,  } = this;
   // spoken	是	你好啊	问题文本
   // rawSpoken	是	@me 你好啊	原始问题文本
   // receivedName	是	仑哥	提问者名称
@@ -27,7 +27,7 @@ export default class QaController extends Controller {
       }
   }
 
-    ctx.body = service.utils.helper.dealResponseData(result)
+    ctx.body = result
     
 
 
