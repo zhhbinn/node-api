@@ -6,21 +6,16 @@ const path = require('path');
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
-module.exports = appInfo => {
+module.exports = (appInfo) => {
   /**
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
-  const config = exports = {};
+  const config = (exports = {});
 
   config.keys = appInfo.name + '_1670635744624_7774';
-
-
-
   config.logger = {
-    level: 'WARN',
     dir: path.join(appInfo.baseDir, './logs/api/'),
-    consoleLevel: 'DEBUG',
     outputJSON: true,
   };
 
@@ -36,7 +31,7 @@ module.exports = appInfo => {
 
   config.security = {
     csrf: {
-      enable:false,
+      enable: false,
       ignore: (ctx) => {
         const ignorePaths = [''];
         return ignorePaths.indexOf(ctx.request.url.split('?')[0]) !== -1;
