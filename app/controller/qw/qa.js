@@ -15,8 +15,21 @@ module.exports = class QaController extends Controller {
 
     const answer = service.qw.dealKey(spoken);
     const targetName = [groupName];
-    answer && groupName && service.qw.postTextMsg(targetName, answer);
-    ctx.logger.info('群聊QA触发', { spoken, rawSpoken, receivedName, groupName, groupRemark, roomType, atMe, answer });
+    let post_res = undefined;
+    if (answer && groupName) {
+      post_res = await service.qw.postTextMsg(targetName, answer);
+    }
+    ctx.logger.info('群聊QA触发', {
+      spoken,
+      rawSpoken,
+      receivedName,
+      groupName,
+      groupRemark,
+      roomType,
+      atMe,
+      answer,
+      post_res,
+    });
 
     const result = {
       code: 0,

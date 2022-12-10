@@ -6,7 +6,7 @@ module.exports = class Qw extends Service {
   dealKey(key) {
     return mapKey(key);
   }
-  postTextMsg(targetName = [], content) {
+  async postTextMsg(targetName = [], content) {
     const { service } = this;
 
     const data = {
@@ -20,7 +20,7 @@ module.exports = class Qw extends Service {
       ],
     };
 
-    service.utils.helper.requestBackend(
+    return await service.utils.helper.requestBackend(
       'post',
       `https://worktool.asrtts.cn/wework/sendRawMessage?robotId=${robot_id}`,
       data,
