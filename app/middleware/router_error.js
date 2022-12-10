@@ -1,4 +1,4 @@
-export default () => {
+module.exports =  () => {
   return async function routerErrorHandler(ctx, next) {
     try {
       await next();

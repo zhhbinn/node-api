@@ -1,8 +1,8 @@
 const Service = require('egg').Service;
 
 const api_key = 'AFQP15jm0RMG1SSCgkLKober2mFJ5cGk';
-export default class Taobao extends Service {
-  public async changeTKL(content: string) {
+module.exports =  class Taobao extends Service {
+   async changeTKL(content) {
     const tmp = await this.service.utils.helper.requestBackend('POST', 'http://api.tbk.dingdanxia.com/tbk/wn_convert', {
       apikey: api_key,
       content,

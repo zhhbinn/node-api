@@ -1,12 +1,13 @@
-import { Controller } from 'egg';
+
+const { Controller } = require('egg');
 const crypto = require('crypto'); 
 
-export default class HomeController extends Controller {
-  public async getMsg() { 
+module.exports =  class HomeController extends Controller {
+  async getMsg() { 
     this.ctx.body = await this.app.seqIns.gzhMsg.findAll();
   }
 
-  public async index() {
+  async index() {
     const query = this.ctx.request.query;
     const signature = query.signature;
     const timestamp = query.timestamp;
@@ -19,7 +20,7 @@ export default class HomeController extends Controller {
     }
   }
 
-  private async check(timestamp, nonce, signature, token) {
+   async check(timestamp, nonce, signature, token) {
     const tmp = [token, timestamp, nonce].sort().join('');
     const currSign = crypto.createHash('sha1').update(tmp).digest('hex');
     return currSign === signature;

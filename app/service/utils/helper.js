@@ -1,17 +1,18 @@
-import { Service } from 'egg';
-import * as _ from 'lodash';
+
+const { Service } = require('egg');
+const _ = require('lodash');
 const moment = require('moment');
 const path = require('path');
 const formidable = require('formidable');
 // const stream = require('stream');
 // const OSS = require('ali-oss');
-export default class Helper extends Service {
-  public async dealIncludeObj(rows, includeKeys) {
+module.exports =  class Helper extends Service {
+  async dealIncludeObj(rows, includeKeys) {
     const resArr = _.map(rows, (item) => {
       let itemObj = {};
       let includeObj = {};
       _.map(item, (val, key) => {
-        let keyIndex = _.findLastIndex(includeKeys, (v: any) => {
+        let keyIndex = _.findLastIndex(includeKeys, (v) => {
           return key.search(v) === 0;
         });
         if (keyIndex !== -1) {
@@ -31,13 +32,13 @@ export default class Helper extends Service {
   }
 
   // 数组去重，arr为普通数组，obj_arr为对象数组
-  public async deDuplication(type = 'arr', Arr, property) {
+  async deDuplication(type = 'arr', Arr, property) {
     if (type === 'arr') {
       return Array.from(new Set(Arr));
     } else {
       let tmp = {};
-      let result: any = [];
-      Arr.forEach((i: any) => {
+      let result = [];
+      Arr.forEach((i) => {
         if (!tmp[i[property]]) {
           tmp[i[property]] = true;
           result.push(i);
@@ -48,7 +49,7 @@ export default class Helper extends Service {
   }
 
   // 数组删除某一项
-  public async deArrayItem(arr, item) {
+  async deArrayItem(arr, item) {
     let tmp = JSON.parse(JSON.stringify(arr));
     arr.forEach((i, index) => {
       if (i === item) {
@@ -58,7 +59,7 @@ export default class Helper extends Service {
     return tmp;
   }
 
-  public async hasSameArrayItem(arr1, arr2, key = '') {
+  async hasSameArrayItem(arr1, arr2, key = '') {
     let result;
     arr1.forEach((i) => {
       result = arr2.find((j) => {
@@ -76,7 +77,7 @@ export default class Helper extends Service {
     return result;
   }
 
-  public async dealResponseData(data, errObj: any = {}) {
+  async dealResponseData(data, errObj = {}) {
     return {
       code: !errObj?.code ? 1 : errObj.code,
       data: data ? data : '',
@@ -84,8 +85,8 @@ export default class Helper extends Service {
     };
   }
 
-  public async parseFormData(req: any) {
-    let fileRes: any = await new Promise(async function (resolve, reject) {
+  async parseFormData(req) {
+    let fileRes = await new Promise(async function (resolve, reject) {
       try {
         var form = new formidable.IncomingForm();
         //设置编辑
@@ -96,7 +97,7 @@ export default class Helper extends Service {
         form.keepExtensions = true;
         //设置单文件大小限制
         form.maxFieldsSize = 10 * 1024 * 1024;
-        let fileArr: any = [];
+        let fileArr = [];
         let fileL = 0;
         let fileBuffer;
         let fileName = '';
@@ -143,7 +144,7 @@ export default class Helper extends Service {
     return fileRes;
   }
 
-  public async sonsTree(arr, topId) {
+  async sonsTree(arr, topId) {
     let topItem = _.filter(arr, (item) => item.pid === topId)[0];
     topItem = _.pick(topItem, 'id', 'name', 'type', 'action_key', 'pid', 'status');
     if (!topItem) {
@@ -163,14 +164,14 @@ export default class Helper extends Service {
     return [topItem];
   }
 
-  public async throwErr(name: string = 'CommonError', msg: string = '') {
+  async throwErr(name = 'CommonError', msg = '') {
     const err = new Error(msg);
     err.name = name;
     throw err;
   }
 
-  public async requestBackend(method: string = 'get', url: string, data = {}, headers = {}) {
-    const upMethod: any = method.toUpperCase();
+  async requestBackend(method = 'get', url, data = {}, headers = {}) {
+    const upMethod = method.toUpperCase();
     const result = await this.ctx.curl(url, {
       method: upMethod,
       data,
@@ -189,7 +190,7 @@ export default class Helper extends Service {
   }
 
   // 随机字符串
-  public async randomStr() {
+  async randomStr() {
     return Math.random().toString(36).slice(-8);
   }
 }

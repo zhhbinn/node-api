@@ -1,6 +1,5 @@
-import { Application } from 'egg';
 
-export default (app: Application) => {
+module.exports =  (app) => {
   const { controller, router } = app;
   router.post('/hp/add_comment', controller.blog.comment.addComment);
 

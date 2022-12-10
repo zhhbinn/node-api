@@ -1,15 +1,16 @@
-import { Service } from 'egg';
+
+const { Service } = require('egg');
 
 /**
  * Test Service
  */
-export default class Test extends Service {
+module.exports =  class Test extends Service {
 
   /**
    * sayHi to you
    * @param name - your name
    */
-  public async sayHi(name: string) {
+   async sayHi(name ) {
     return `hi, ${name}`;
   }
 }

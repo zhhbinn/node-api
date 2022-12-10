@@ -1,8 +1,9 @@
-import { Controller } from 'egg';
+
+const { Controller } = require('egg');
 const crypto = require('crypto'); 
 
-export default class VerifyController extends Controller {
-  public async index() {
+module.exports =  class VerifyController extends Controller {
+  async index() {
     const query = this.ctx.request.query;
     const signature = query.signature;
     const timestamp = query.timestamp;
@@ -15,7 +16,7 @@ export default class VerifyController extends Controller {
     }
   }
 
-  private async check(timestamp, nonce, signature, token) {
+   async check(timestamp, nonce, signature, token) {
     const tmp = [token, timestamp, nonce].sort().join('');
     const currSign = crypto.createHash('sha1').update(tmp).digest('hex');
     return currSign === signature;

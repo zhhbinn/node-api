@@ -1,9 +1,10 @@
-import { Controller } from 'egg';
+
+const { Controller } = require('egg');
 const { Op } = require('sequelize');
 // const moment = require('moment');
 
-export default class ArticleController extends Controller {
-  public async index() {
+module.exports =  class ArticleController extends Controller {
+  async index() {
     const { ctx, service } = this;
     const { article_id } = ctx.request.body;
     const result = await this.app.seqIns.article.findOne({
@@ -21,7 +22,7 @@ export default class ArticleController extends Controller {
 
     ctx.body = await service.utils.helper.dealResponseData(result);
   }
-  public async list() {
+  async list() {
     const { ctx, service } = this;
     const result = await this.app.seqIns.article.findAll({
       attributes: ['title', 'customize_id', 'tag_str', 'created_time'],

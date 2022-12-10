@@ -1,13 +1,14 @@
-import { Service } from 'egg';
 
-export default class WxReply extends Service {
-  public async handleReply(ask) {
+const { Service } = require('egg');
+
+module.exports =  class WxReply extends Service {
+  async handleReply(ask) {
     if (this.includeKeyStr(ask)) {
       return await this.service.taobao.changeTKL(ask);
     }
   }
 
-  private includeKeyStr(ask) {
+   includeKeyStr(ask) {
     return (
       ask.indexOf('taobao') !== -1 ||
       ask.indexOf('淘宝') !== -1 ||

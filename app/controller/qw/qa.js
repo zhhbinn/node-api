@@ -1,8 +1,9 @@
-import { Controller } from 'egg';
+
+const { Controller } = require('egg');
 // const moment = require('moment');
 
-export default class QaController extends Controller {
-  public async callback() {
+module.exports =  class QaController extends Controller {
+  async callback() {
     const { ctx,  } = this;
   // spoken	是	你好啊	问题文本
   // rawSpoken	是	@me 你好啊	原始问题文本

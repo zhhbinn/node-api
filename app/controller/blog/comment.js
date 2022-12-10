@@ -1,8 +1,9 @@
-import { Controller } from 'egg';
+
+const { Controller } = require('egg');
 const moment = require('moment');
 
-export default class CommentController extends Controller {
-  public async addComment() {
+module.exports =  class CommentController extends Controller {
+  async addComment() {
     const { ctx, service } = this;
     const { name, email, content, article_id } = ctx.request.body;
     await this.app.seqIns.comment.create({
