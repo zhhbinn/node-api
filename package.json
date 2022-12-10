@@ -36,9 +36,8 @@
     "eslint-config-egg": "^12"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=8.9.0"
   },
-
   "ci": {
     "version": "16, 18",
     "type": "github"

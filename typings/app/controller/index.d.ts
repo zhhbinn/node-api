@@ -7,6 +7,7 @@ import ExportBlogArticle = require('../../../app/controller/blog/article');
 import ExportBlogComment = require('../../../app/controller/blog/comment');
 import ExportChangeLinkIndex = require('../../../app/controller/changeLink/index');
 import ExportQwQa = require('../../../app/controller/qw/qa');
+import ExportQwTimer = require('../../../app/controller/qw/timer');
 import ExportWechatReply = require('../../../app/controller/wechat/reply');
 import ExportWechatVerify = require('../../../app/controller/wechat/verify');
 
@@ -22,6 +23,7 @@ declare module 'egg' {
     }
     qw: {
       qa: ExportQwQa;
+      timer: ExportQwTimer;
     }
     wechat: {
       reply: ExportWechatReply;

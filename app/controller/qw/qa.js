@@ -13,7 +13,10 @@ module.exports = class QaController extends Controller {
     // atMe	是	true	是否@机器人（群聊）
     const { spoken, rawSpoken, receivedName, groupName, groupRemark, roomType, atMe } = ctx.request.body;
 
-    ctx.logger.info('群聊QA触发', { spoken, rawSpoken, receivedName, groupName, groupRemark, roomType, atMe });
+    const answer = service.qw.dealKey(spoken);
+    const targetName = [groupName];
+    answer && groupName && service.qw.postTextMsg(targetName, answer);
+    ctx.logger.info('群聊QA触发', { spoken, rawSpoken, receivedName, groupName, groupRemark, roomType, atMe, answer });
 
     const result = {
       code: 0,
@@ -21,32 +24,12 @@ module.exports = class QaController extends Controller {
       data: {
         type: 5000,
         info: {
+          // https://www.apifox.cn/apidoc/project-1035094/doc-861677
+          // 空字符串表示不处理此次回调
           text: '',
         },
       },
     };
-
-    const data = {
-      socketType: 2,
-      list: [
-        {
-          type: 203,
-          titleList: ['羽毛球群'],
-          receivedContent: '你好~',
-        },
-      ],
-    };
-
-    if (spoken === '你好') {
-      service.utils.helper.requestBackend(
-        'post',
-        `https://worktool.asrtts.cn/wework/sendRawMessage?robotId=b96aa3e43ff1422b9db0b601fd411d69`,
-        data,
-        {
-          'Content-Type': 'application/json',
-        }
-      );
-    }
     ctx.body = result;
   }
 };

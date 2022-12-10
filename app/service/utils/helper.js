@@ -1,4 +1,3 @@
-
 const { Service } = require('egg');
 const _ = require('lodash');
 const moment = require('moment');
@@ -6,7 +5,7 @@ const path = require('path');
 const formidable = require('formidable');
 // const stream = require('stream');
 // const OSS = require('ali-oss');
-module.exports =  class Helper extends Service {
+module.exports = class Helper extends Service {
   async dealIncludeObj(rows, includeKeys) {
     const resArr = _.map(rows, (item) => {
       let itemObj = {};
@@ -190,7 +189,11 @@ module.exports =  class Helper extends Service {
   }
 
   // 随机字符串
-  async randomStr() {
+  randomStr() {
     return Math.random().toString(36).slice(-8);
   }
-}
+
+  randomNum(min, max) {
+    return Math.round(Math.random() * (max - min)) + min;
+  }
+};
