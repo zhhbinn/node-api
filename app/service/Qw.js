@@ -74,7 +74,7 @@ module.exports = class Qw extends Service {
     return res?.abstract || '';
   }
   async atAllPeople() {
-    const res = await this.postTextMsg(['测试'], '我老大叫我艾特你们', ['@所有人']);
+    const res = await this.postTextMsg(['羽毛球群'], '我老大叫我艾特你们', ['@所有人']);
     this.ctx.logger.info('艾特所有人', res);
     return '';
   }

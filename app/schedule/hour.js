@@ -23,6 +23,7 @@ class Hour extends Subscription {
   async subscribe() {
     this.every();
     this.mask();
+    this.ask();
   }
   async every() {
     const h = moment().hours();
@@ -33,9 +34,9 @@ class Hour extends Subscription {
     if ([8].includes(h)) {
       content = '够钟o屎啦';
     }
-    if ([9].includes(h)) {
-      content = '够钟上班啦';
-    }
+    // if ([9].includes(h)) {
+    //   content = '够钟上班啦';
+    // }
     if ([15].includes(h)) {
       content = '够钟饮茶啦';
     }
@@ -62,6 +63,13 @@ class Hour extends Subscription {
         '一次性医用口罩有效期一般为4小时。如果佩戴一个口罩的时间过长，人体呼出的湿气会导致口罩内面潮湿，对细菌和病毒的过滤效果将大大降低，所以你该换口罩了。'
       );
       this.ctx.logger.info('口罩定时任务', { res });
+    }
+  }
+  async ask() {
+    const h = moment().hours();
+    if (h === 9) {
+      const res = await this.postTextMsg(['羽毛球群'], '统计一下需要上班的人数', ['@所有人']);
+      this.ctx.logger.info('提问定时任务', { res });
     }
   }
 }
