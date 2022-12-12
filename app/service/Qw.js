@@ -4,11 +4,11 @@ const moment = require('moment');
 const { Op } = require('sequelize');
 const robot_id = 'b96aa3e43ff1422b9db0b601fd411d69';
 module.exports = class Qw extends Service {
-  async dealKey(key) {
-    const res = await mapKey(this, key);
+  async dealKey(key, receivedName) {
+    const res = await mapKey(this, key, receivedName);
     return res;
   }
-  async postTextMsg(targetName = ['测试'], content) {
+  async postTextMsg(targetName = ['测试'], content, atList = []) {
     const { service } = this;
 
     const data = {
@@ -18,6 +18,7 @@ module.exports = class Qw extends Service {
           type: 203,
           titleList: targetName,
           receivedContent: content,
+          atList,
         },
       ],
     };
@@ -62,5 +63,19 @@ module.exports = class Qw extends Service {
 
     const str = `『${type === 'timer' ? '昨日' : '实时'}排行榜』\n\n${rank}\n注：以上数据仅统计文字部分`;
     return str;
+  }
+
+  async baike(key) {
+    const url = 'https://baike.baidu.com/api/openapi/BaikeLemmaCardApi?appid=379020&bk_key=';
+
+    key = key.split('什么是')[1];
+
+    const res = await this.service.utils.helper.requestBackend('get', url + key);
+    return res?.abstract || '';
+  }
+  async atAllPeople() {
+    const res = await this.postTextMsg(['测试'], '我老大叫我艾特你们', ['@所有人']);
+    this.ctx.logger.info('艾特所有人', res);
+    return '';
   }
 };

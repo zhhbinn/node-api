@@ -13,7 +13,7 @@ module.exports = class QaController extends Controller {
     // atMe	是	true	是否@机器人（群聊）
     const { spoken, rawSpoken, receivedName, groupName, groupRemark, roomType, atMe } = ctx.request.body;
 
-    const answer = await service.qw.dealKey(spoken);
+    const answer = await service.qw.dealKey(spoken, receivedName);
     const targetName = [groupName];
     let post_res = undefined;
     if (answer && groupName) {

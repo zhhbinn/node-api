@@ -88,8 +88,29 @@ const map = new Map([
   [
     ['排行榜'],
     {
+      exact: true,
       callback: async (_this) => {
         return await _this.service.qw.getRank('qa');
+      },
+    },
+  ],
+  [
+    ['什么是'],
+    {
+      callback: async (_this, key) => {
+        return await _this.service.qw.baike(key);
+      },
+    },
+  ],
+  [
+    ['艾特所有人'],
+    {
+      callback: async (_this, key, receivedName) => {
+        if (receivedName === 'i') {
+          return await _this.service.qw.atAllPeople();
+        } else {
+          return '';
+        }
       },
     },
   ],
@@ -99,19 +120,20 @@ const randomNum = (min, max) => {
   return Math.round(Math.random() * (max - min)) + min;
 };
 
-const mapKey = async (_this, key) => {
+const mapKey = async (_this, key, receivedName) => {
   const all_keys = Array.from(map.keys());
 
   key = String(key).toLowerCase();
 
-  const fit_keys = all_keys.find((i) => i.includes(key) || key.includes(i));
+  const fit_keys = all_keys.find((i) => i.find((j) => j.includes(key) || key.includes(j)));
 
   const tmp = map.get(fit_keys);
+  if (tmp?.exact && !fit_keys.includes(key)) return '';
 
   if (!tmp) return '';
   const callback = tmp?.callback;
   if (callback && typeof callback === 'function') {
-    const tmp = await callback(_this);
+    const tmp = await callback(_this, key, receivedName);
     return tmp;
   } else {
     const answers = tmp.answers;
