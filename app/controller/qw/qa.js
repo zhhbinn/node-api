@@ -1,5 +1,5 @@
 const { Controller } = require('egg');
-// const moment = require('moment');
+const moment = require('moment');
 
 module.exports = class QaController extends Controller {
   async callback() {
@@ -19,6 +19,7 @@ module.exports = class QaController extends Controller {
     if (answer && groupName) {
       post_res = await service.qw.postTextMsg(targetName, answer);
     }
+    service.qw.insertChat(receivedName, spoken, atMe);
     ctx.logger.info('群聊QA触发', {
       spoken,
       rawSpoken,
@@ -44,5 +45,11 @@ module.exports = class QaController extends Controller {
       },
     };
     ctx.body = result;
+  }
+  async getRank() {
+    let res = await this.service.qw.getRank();
+    res.sort((a, b) => b.count - a.count);
+
+    this.ctx.body = res;
   }
 };

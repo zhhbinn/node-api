@@ -7,6 +7,7 @@ import ExportComment = require('../../../app/model/comment');
 import ExportGzhMsg = require('../../../app/model/gzh_msg');
 import ExportHole = require('../../../app/model/hole');
 import ExportInit = require('../../../app/model/init');
+import ExportQwGroupYmqq = require('../../../app/model/qw_group_ymqq');
 
 declare module 'egg' {
   interface IModel {
@@ -15,5 +16,6 @@ declare module 'egg' {
     GzhMsg: ReturnType<typeof ExportGzhMsg>;
     Hole: ReturnType<typeof ExportHole>;
     Init: ReturnType<typeof ExportInit>;
+    QwGroupYmqq: ReturnType<typeof ExportQwGroupYmqq>;
   }
 }

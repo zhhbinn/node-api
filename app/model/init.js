@@ -1,8 +1,6 @@
 const Sequelize = require('sequelize');
 const cls = require('cls-hooked');
-//sequelize 命名空间
-import * as _ from 'lodash';
-
+const _ = require('lodash');
 const namespace = cls.createNamespace('sql-db-namespace');
 Sequelize.useCLS(namespace);
 const models = {
@@ -10,6 +8,7 @@ const models = {
   comment: require('./comment')(Sequelize),
   gzh_msg: require('./gzh_msg')(Sequelize),
   article: require('./article')(Sequelize),
+  qw_group_ymqq: require('./qw_group_ymqq')(Sequelize),
 };
 
 module.exports = (app) => {
@@ -39,7 +38,7 @@ module.exports = (app) => {
   _.mapKeys(models, (value, key) => {
     sqlModelsIns[transformStr3(key)] = sqlModel.define(key, value, {
       freezeTableName: true, // Model 对应的表名将与model名相同
-      charset: 'utf8',
+      charset: 'utf8mb4',
       timestamps: false, //去除createAt updateAt
     });
   });
