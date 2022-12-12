@@ -21,14 +21,37 @@ class Hour extends Subscription {
 
   // subscribe 是真正定时任务执行时被运行的函数
   async subscribe() {
-    this.drink();
+    this.every();
     this.mask();
   }
-  async drink() {
+  async every() {
     const h = moment().hours();
-    if (![0, 1, 2, 3, 4, 5, 6, 7, 8].includes(h)) {
-      const res = await this.service.qw.postTextMsg(['羽毛球群'], '够钟饮水啦');
-      this.ctx.logger.info('饮水定时任务', { res });
+    let content = '';
+    if ([10, 11, 12, 13, 14, 16, 17, 18].includes(h)) {
+      content = '够钟饮水啦';
+    }
+    if ([8].includes(h)) {
+      content = '够钟o屎啦';
+    }
+    if ([9].includes(h)) {
+      content = '够钟上班啦';
+    }
+    if ([15].includes(h)) {
+      content = '够钟饮茶啦';
+    }
+    if ([19].includes(h)) {
+      content = '够钟下班啦';
+    }
+    if ([21].includes(h)) {
+      content = '够钟打机啦';
+    }
+    if ([23].includes(h)) {
+      content = '够钟训觉啦';
+    }
+
+    if (content) {
+      const res = await this.service.qw.postTextMsg(['羽毛球群'], content);
+      this.ctx.logger.info('小时任务', { content, res });
     }
   }
   async mask() {
