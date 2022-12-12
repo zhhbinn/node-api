@@ -13,13 +13,15 @@ module.exports = class QaController extends Controller {
     // atMe	是	true	是否@机器人（群聊）
     const { spoken, rawSpoken, receivedName, groupName, groupRemark, roomType, atMe } = ctx.request.body;
 
-    const answer = service.qw.dealKey(spoken);
+    const answer = await service.qw.dealKey(spoken);
     const targetName = [groupName];
     let post_res = undefined;
     if (answer && groupName) {
       post_res = await service.qw.postTextMsg(targetName, answer);
     }
-    service.qw.insertChat(receivedName, spoken, atMe);
+    if (this.app.config.env === 'prod') {
+      service.qw.insertChat(receivedName, spoken, atMe);
+    }
     ctx.logger.info('群聊QA触发', {
       spoken,
       rawSpoken,

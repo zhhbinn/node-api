@@ -4,10 +4,11 @@ const moment = require('moment');
 const { Op } = require('sequelize');
 const robot_id = 'b96aa3e43ff1422b9db0b601fd411d69';
 module.exports = class Qw extends Service {
-  dealKey(key) {
-    return mapKey(key);
+  async dealKey(key) {
+    const res = await mapKey(this, key);
+    return res;
   }
-  async postTextMsg(targetName = [], content) {
+  async postTextMsg(targetName = ['测试'], content) {
     const { service } = this;
 
     const data = {
@@ -20,7 +21,7 @@ module.exports = class Qw extends Service {
         },
       ],
     };
-    if (this.app.config.env === 'prod') {
+    if (this.app.config.env === 'prod' || targetName[0] === '测试') {
       return await service.utils.helper.requestBackend(
         'post',
         `https://worktool.asrtts.cn/wework/sendRawMessage?robotId=${robot_id}`,
@@ -41,8 +42,10 @@ module.exports = class Qw extends Service {
       created_time: moment().unix(),
     });
   }
-  async getRank() {
-    const day = moment().add(-1, 'days').format('YYYY-MM-DD');
+  async getRank(type = 'timer') {
+    const day = moment()
+      .add(type === 'timer' ? -1 : 0, 'days')
+      .format('YYYY-MM-DD');
     const range = [moment(`${day} 00:00:00`).unix(), moment(`${day} 23:59:59`).unix()];
     const res = await this.app.seqIns.qwGroupYmqq.count({
       where: {
@@ -55,6 +58,9 @@ module.exports = class Qw extends Service {
       group: 'user',
     });
     res.sort((a, b) => b.count - a.count);
-    return res;
+    const rank = res.map((i, idx) => `${idx + 1} - ${i.user}\n`).join('');
+
+    const str = `『${type === 'timer' ? '昨日' : '实时'}排行榜』\n\n${rank}\n注：以上数据仅统计文字部分`;
+    return str;
   }
 };

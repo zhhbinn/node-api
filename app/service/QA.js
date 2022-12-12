@@ -84,13 +84,22 @@ const map = new Map([
       answers: ['来陪妲己玩耍吧'],
     },
   ],
+
+  [
+    ['排行榜'],
+    {
+      callback: async (_this) => {
+        return await _this.service.qw.getRank('qa');
+      },
+    },
+  ],
 ]);
 
 const randomNum = (min, max) => {
   return Math.round(Math.random() * (max - min)) + min;
 };
 
-const mapKey = (key) => {
+const mapKey = async (_this, key) => {
   const all_keys = Array.from(map.keys());
 
   key = String(key).toLowerCase();
@@ -100,14 +109,19 @@ const mapKey = (key) => {
   const tmp = map.get(fit_keys);
 
   if (!tmp) return '';
+  const callback = tmp?.callback;
+  if (callback && typeof callback === 'function') {
+    const tmp = await callback(_this);
+    return tmp;
+  } else {
+    const answers = tmp.answers;
+    const common_key_start = tmp?.common_key_start || '';
+    const len = answers.length;
 
-  const answers = tmp.answers;
-  const common_key_start = tmp?.common_key_start || '';
-  const len = answers.length;
+    const random = randomNum(0, len - 1);
 
-  const random = randomNum(0, len - 1);
-
-  return `${common_key_start}${answers[random]}`;
+    return `${common_key_start}${answers[random]}`;
+  }
 };
 
 module.exports = mapKey;
