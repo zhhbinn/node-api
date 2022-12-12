@@ -48,7 +48,6 @@ module.exports = class QaController extends Controller {
   }
   async getRank() {
     let res = await this.service.qw.getRank();
-    res.sort((a, b) => b.count - a.count);
 
     this.ctx.body = res;
   }

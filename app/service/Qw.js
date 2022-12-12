@@ -42,8 +42,9 @@ module.exports = class Qw extends Service {
     });
   }
   async getRank() {
-    const range = [moment().startOf('day').unix(), moment().endOf('day').unix()];
-    return await this.app.seqIns.qwGroupYmqq.count({
+    const day = moment().add(-1, 'days').format('YYYY-MM-DD');
+    const range = [moment(`${day} 00:00:00`).unix(), moment(`${day} 23:59:59`).unix()];
+    const res = await this.app.seqIns.qwGroupYmqq.count({
       where: {
         status: 1,
         created_time: {
@@ -53,5 +54,7 @@ module.exports = class Qw extends Service {
       attributes: ['user'],
       group: 'user',
     });
+    res.sort((a, b) => b.count - a.count);
+    return res;
   }
 };
