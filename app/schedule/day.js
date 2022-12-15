@@ -21,7 +21,7 @@ class Day extends Subscription {
 
   // subscribe 是真正定时任务执行时被运行的函数
   async subscribe() {
-    this.rank();
+    // this.rank();
   }
   async rank() {
     const rank = await this.service.qw.getRank();
